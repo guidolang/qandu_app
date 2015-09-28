@@ -22,6 +22,7 @@ class QuestionCreateView(CreateView):
 class QuestionListView(ListView):
     model = Question
     template_name = 'question/question_list.html'
+    paginate_by = 5
     
 class QuestionDetailView(DetailView):
     model = Question
