@@ -12,7 +12,7 @@ class Home(TemplateView):
 class QuestionCreateView(CreateView):
     model = Question
     template_name = 'question/question_form.html'
-    fields = ['title', 'description']
+    fields = ['title', 'description', 'visibility']
     success_url = reverse_lazy('question_list')
     
     def form_valid(self, form):
@@ -62,7 +62,7 @@ class QuestionDeleteView(DeleteView):
 class AnswerCreateView(CreateView):
     model = Answer
     template_name = 'answer/answer_form.html'
-    fields = ['text']
+    fields = ['text', 'visibility']
     
     def get_success_url(self):
         return self.object.question.get_absolute_url()
@@ -137,9 +137,9 @@ class UserDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         user_in_view = User.objects.get(username=self.kwargs['slug'])
-        questions = Question.objects.filter(user=user_in_view)
+        questions = Question.objects.filter(user=user_in_view).exclude(visibility=1)
         context['questions'] = questions
-        answers = Answer.objects.filter(user=user_in_view)
+        answers = Answer.objects.filter(user=user_in_view).exclude(visibility=1)
         context['answers'] = answers
         return context
 

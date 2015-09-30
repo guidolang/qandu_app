@@ -120,12 +120,3 @@ STATIC_ROOT = 'staticfiles'
 LOGIN_URL = '/user/login'
 LOGIN_REDIRECT_URL = '/question/'
 SITE_ID = 1
-
-ACCOUNT_ACTIVATION_DAYS = 7
-REGISTRATION_EMAIL_HTML = False
-EMAIL_USE_TLS = True
-EMAIL_HOST = "smtp.gmail.com"
-DEFAULT_FROM_EMAIL = "QandU <qucis381@gmail.com>"
-EMAIL_HOST_USER = "qucis381@gmail.com"
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
-EMAIL_PORT = 587
