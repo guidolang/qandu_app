@@ -12,7 +12,7 @@ class Home(TemplateView):
 class QuestionCreateView(CreateView):
     model = Question
     template_name = 'question/question_form.html'
-    fields = ['title', 'description', 'visibility']
+    fields = ['title', 'description', 'visibility', 'image_file']
     success_url = reverse_lazy('question_list')
     
     def form_valid(self, form):
@@ -48,7 +48,7 @@ class QuestionDetailView(DetailView):
 class QuestionUpdateView(UpdateView):
     model = Question
     template_name = 'question/question_form.html'
-    fields = ['title', 'description']
+    fields = ['title', 'description', 'image_file']
     
     def get_object(self, *args, **kwargs):
         object = super(QuestionUpdateView, self).get_object(*args, **kwargs)

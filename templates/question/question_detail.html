@@ -2,6 +2,7 @@
 {% block content %}
 <h1>{{ question.title }}</h1>
 <p>{{ question.description }}</p>
+<p>{% if question.image_file %}<img src="{{ question.image_file.url }}" />{% endif %}</p>
 <p>Asked {% if question.visibility == 0 %} by <a href="{% url 'user_detail' slug=question.user.username %}">{{ question.user.username }}</a> {% endif %} on {{ question.created_at }}</p>
 {% if question.user == user %}
 <p><a href="{% url 'question_update' pk=question.id %}">Edit question</a></p>
