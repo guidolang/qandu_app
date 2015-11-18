@@ -1,6 +1,50 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{ question.title }}</h1>
+{% if rating.rating__avg < 0.5 %}
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  ({{ rating.rating__avg }})
+{% elif rating.rating__avg < 1.5 %}
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  ({{ rating.rating__avg }})
+{% elif rating.rating__avg < 2.5 %}
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  ({{ rating.rating__avg }})
+{% elif rating.rating__avg < 3.5 %}
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  ({{ rating.rating__avg }})
+{% elif rating.rating__avg < 4.5 %}
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star-empty"></span>
+  ({{ rating.rating__avg }})
+{% else %}
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  <span class="glyphicon glyphicon-star"></span>
+  ({{ rating.rating__avg }})
+{% endif %}
+
 <p>{{ question.description }}</p>
 <p>{% if question.image_file %}<img src="{{ question.image_file.url }}" />{% endif %}</p>
 <p>Asked {% if question.visibility == 0 %} by <a href="{% url 'user_detail' slug=question.user.username %}">{{ question.user.username }}</a> {% endif %} on {{ question.created_at }}</p>

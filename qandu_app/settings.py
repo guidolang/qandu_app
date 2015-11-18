@@ -102,7 +102,7 @@ else:
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
@@ -124,8 +124,6 @@ SITE_ID = 1
 
 # Boto settings
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_S3_FORCE_HTTP_URL = True
-AWS_QUERYSTRING_AUTH = False
-AWS_STORAGE_BUCKET_NAME = 'coffeedapp2'
-#MEDIA_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-#MEDIA_ROOT = 'uploads'
+#AWS_S3_FORCE_HTTP_URL = True
+#AWS_QUERYSTRING_AUTH = False
+AWS_STORAGE_BUCKET_NAME = 'qandu'

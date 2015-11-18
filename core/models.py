@@ -16,6 +16,15 @@ VISIBILITY_CHOICES = (
 (1, 'Anonymous'),
 )
 
+RATING_CHOICES = (
+(0, 'None'),
+(1, '*'),
+(2, '**'),
+(3, '***'),
+(4, '****'),
+(5, '*****'),
+)
+
 # Create your models here.
 class Question(models.Model):
     title = models.CharField(max_length=300)
@@ -37,6 +46,7 @@ class Answer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     visibility = models.IntegerField(choices=VISIBILITY_CHOICES, default=0)
+    rating = models.IntegerField(choices=RATING_CHOICES, default=0)
     
     def __unicode__(self):
         return self.text
