@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'core',
     'bootstrap3',
     'storages',
+    'formtools',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -127,3 +128,5 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 #AWS_S3_FORCE_HTTP_URL = True
 #AWS_QUERYSTRING_AUTH = False
 AWS_STORAGE_BUCKET_NAME = 'qandu'
+
+#AUTH_USER_MODULE = 'qandu_app.CustomUser'

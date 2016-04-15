@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from .views import *
 
 urlpatterns = patterns('',
-    url(r'^$', Home.as_view(), name='home'), 
+    url(r'^$', Home.as_view(), name='home'),
+    url(r'^user/register/$', UserProfileRegistrationView.as_view(), name='registration_register'),
     url(r'^user/', include('registration.backends.simple.urls')),
     url(r'^user/', include('django.contrib.auth.urls')),
-    url(r'^question/create/$', login_required(QuestionCreateView.as_view()), name='question_create'),
+    url(r'^question/create/$', login_required(QuestionCreateWizardView.as_view()), name='question_create'),
     url(r'^question/$', login_required(QuestionListView.as_view()), name='question_list'),
     url(r'^question/(?P<pk>\d+)/$', login_required(QuestionDetailView.as_view()), name='question_detail'),
     url(r'^question/update/(?P<pk>\d+)/$', login_required(QuestionUpdateView.as_view()), name='question_update'),

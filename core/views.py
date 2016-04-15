@@ -5,6 +5,9 @@ from django.core.exceptions import PermissionDenied
 from .models import *
 from .forms import *
 from django.db.models import Avg
+from registration.backends.simple.views import RegistrationView
+from forms import UserProfileRegistrationForm
+from formtools.wizard.views import SessionWizardView
 
 # Create your views here.
 class Home(TemplateView):
@@ -152,13 +155,16 @@ class UserDetailView(DetailView):
         context['questions'] = questions
         answers = Answer.objects.filter(user=user_in_view).exclude(visibility=1)
         context['answers'] = answers
+        userprofile = UserProfile.objects.filter(user=user_in_view)
+        context['userprofile'] = userprofile
         return context
-
+    
 class UserUpdateView(UpdateView):
     model = User
     slug_field = 'username'
     template_name = 'user/user_form.html'
-    fields = ['email', 'first_name', 'last_name']
+    #fields = ['email', 'first_name', 'last_name']
+    form_class = UserProfileUpdateForm
     
     def get_success_url(self):
         return reverse('user_detail', args=[self.request.user.username])
@@ -168,6 +174,14 @@ class UserUpdateView(UpdateView):
         if object != self.request.user:
             raise PermissionDenied()
         return object
+    
+    def register(self, request, form_class):
+        new_user = super(UserProfileUpdateView, self).register(request, form_class)
+        user_profile = UserProfile()
+        user_profile.user = new_user
+        user_profile.city = form_class.cleaned_data['city']
+        user_profile.save()
+        return user_profile
     
 class UserDeleteView(DeleteView):
     model = User
@@ -193,4 +207,31 @@ class SearchQuestionListView(QuestionListView):
     def get_queryset(self):
         incoming_query_string = self.request.GET.get('query', '')
         return Question.objects.filter(title__icontains=incoming_query_string)
+
+class UserProfileRegistrationView(RegistrationView):
+    form_class = UserProfileRegistrationForm
+
+    def register(self, request, form_class):
+        new_user = super(UserProfileRegistrationView, self).register(request, form_class)
+        user_profile = UserProfile()
+        user_profile.user = new_user
+        user_profile.city = form_class.cleaned_data['city']
+        user_profile.save()
+        return user_profile
     
+    def get_success_url(self, request, user):
+        return reverse_lazy('question_list')
+
+class QuestionCreateWizardView(SessionWizardView):
+    form_list = [QuestionCreateWizardForm1, QuestionCreateWizardForm2, QuestionCreateWizardForm3]
+    template_name = 'question/question_wizard_form.html'
+    
+    def done(self, form_list, **kwargs):
+        question = Question()
+        question.user = self.request.user
+        question.title = form_list[0].cleaned_data['title']
+        question.description = form_list[1].cleaned_data['description']
+        question.visibility = form_list[2].cleaned_data['visibility']
+        question.save()
+        return redirect('question_list')
+        

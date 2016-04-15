@@ -58,4 +58,14 @@ class Vote(models.Model):
     
     def __unicode__(self):
         return "%s upvoted" % (self.user.username)
-    
+        
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE)
+    city = models.CharField(max_length=100, blank=True, null=True)
+
+    def __unicode__(self):
+        return "%s profile" % (self.user.username)
+
+
+
