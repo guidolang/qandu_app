@@ -4,10 +4,10 @@ from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import PermissionDenied
 from .models import *
 from .forms import *
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from registration.backends.simple.views import RegistrationView
-from forms import UserProfileRegistrationForm
 from formtools.wizard.views import SessionWizardView
+from datetime import datetime
 
 # Create your views here.
 class Home(TemplateView):
@@ -234,4 +234,15 @@ class QuestionCreateWizardView(SessionWizardView):
         question.visibility = form_list[2].cleaned_data['visibility']
         question.save()
         return redirect('question_list')
-        
+
+class UserListView(ListView):
+    model = User
+    template_name = 'user/user_list.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(UserListView, self).get_context_data(**kwargs)
+        today = datetime.now()
+        # Returns top 5 users by number of questions submitted this month
+        user_list = User.objects.annotate(number_of_questions_alltime=Count('question')).filter(question__created_at__month=today.month, question__created_at__year=today.year).annotate(number_of_questions=Count('question')).order_by('-number_of_questions')[:5]
+        context['user_list'] = user_list
+        return context
